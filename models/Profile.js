@@ -5,9 +5,31 @@ const ProfileSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'user'
 	},
-	favouriteRecipes: {
-		type: [String]
-	},
+	favouriteRecipes: [{
+		name: {
+			type: String
+		},
+		servingQty: {
+			type: String
+		},
+		prepTimeInMin: {
+			type: String
+		},
+		ingredients: [{
+			ingredient: {
+				type: String
+			},
+			quantity: {
+				type: Number
+			},
+			measure: {
+				type: String
+			},
+			format: {
+				type: String,
+			}
+		}]
+	}],
 	bio: {
 		type: String
 	}
