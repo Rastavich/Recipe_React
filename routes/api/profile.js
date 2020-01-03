@@ -43,7 +43,9 @@ router.post('/', auth, async (req, res) => {
     const profileFields = {};
     profileFields.user = req.user.id;
     if (favouriteRecipes) {
-        profileFields.favouriteRecipes = favouriteRecipes.split(',').map(favouriteRecipes => favouriteRecipes.trim());
+        profileFields.favouriteRecipes = favouriteRecipes
+            .split(',')
+            .map(favouriteRecipes => favouriteRecipes.trim());
     }
     if (bio) profileFields.bio = bio;
 
@@ -70,7 +72,6 @@ router.post('/', auth, async (req, res) => {
 
         await profile.save();
         res.json(profile);
-
     } catch (err) {
         console.log(err.message);
         res.status(500).send('Server Error');
@@ -142,14 +143,25 @@ router.delete('/', auth, async (req, res) => {
     }
 });
 
-// @route   PUT api/profile/recipes
-// @desc    Add profile recipes
+// @route   PUT api/profile/favouriteRecipes
+// @desc    Add profile favourite recipes
 // @access  Private
-router.put('/favouriteRecipes', [auth, [
-        check('name', 'Name is required').not().isEmpty(),
-        check('servingQty', 'Serving Qty is Required').not().isEmpty(),
-        check('prepTimeInMin', 'Prep time is Required').not().isEmpty()
-    ]],
+router.put(
+    '/favouriteRecipes',
+    [
+        auth,
+        [
+            check('name', 'Name is required')
+            .not()
+            .isEmpty(),
+            check('servingQty', 'Serving Qty is Required')
+            .not()
+            .isEmpty(),
+            check('prepTimeInMin', 'Prep time is Required')
+            .not()
+            .isEmpty()
+        ]
+    ],
     async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -162,26 +174,15 @@ router.put('/favouriteRecipes', [auth, [
             name,
             servingQty,
             prepTimeInMin,
-            ingredients: [{
-                ingredient,
-                quantity,
-                measure,
-                format
-            }]
+            ingredients: [ingredient, quantity, measure, format]
         } = req.body;
 
         const favouriteRecipes = {
             name,
             servingQty,
             prepTimeInMin,
-            ingredients: [{
-                ingredient,
-                quantity,
-                measure,
-                format
-            }]
+            ingredients: [ingredient, quantity, measure, format]
         };
-
 
         try {
             const profile = await Profile.findOne({
@@ -193,34 +194,123 @@ router.put('/favouriteRecipes', [auth, [
             await profile.save();
 
             res.json(profile);
-
         } catch (err) {
             console.error(err.message);
             res.status(500).send('Server Errror');
         }
-    });
+    }
+);
 
 // @route   DELETE api/profile/favouriteRecipes/:favouriteRecipes_id
 // @desc    Delete profile favourite recipes
 // @access  Private
-router.delete('/favouriteRecipes/:favouriteRecipes_id', auth, async (req, res) => {
+router.delete(
+    '/favouriteRecipes/:favouriteRecipes_id',
+    auth,
+    async (req, res) => {
+        try {
+            const profile = await Profile.findOne({
+                user: req.user.id
+            });
+
+            // Get remove index
+            const removeIndex = profile.favouriteRecipes
+                .map(item => item.id)
+                .indexOf(req.params.favouriteRecipes_id);
+
+            profile.favouriteRecipes.splice(removeIndex, 1);
+
+            await profile.save();
+
+            res.json(profile);
+        } catch (error) {
+            console.error(err.message);
+            res.status(500).send('Server Errror');
+        }
+    }
+);
+
+// @route   PUT api/profile/savedRecipes
+// @desc    Add profile recipes
+// @access  Private
+router.put(
+    '/savedRecipes',
+    [
+        auth,
+        [
+            check('name', 'Name is required')
+            .not()
+            .isEmpty(),
+            check('servingQty', 'Serving Qty is Required')
+            .not()
+            .isEmpty(),
+            check('prepTimeInMin', 'Prep time is Required')
+            .not()
+            .isEmpty()
+        ]
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.status(400).json({
+                errors: errors.array()
+            });
+        }
+
+        const {
+            name,
+            servingQty,
+            prepTimeInMin,
+            ingredients: [ingredient, quantity, measure, format]
+        } = req.body;
+
+        const savedRecipes = {
+            name,
+            servingQty,
+            prepTimeInMin,
+            ingredients: [ingredient, quantity, measure, format]
+        };
+
+        try {
+            const profile = await Profile.findOne({
+                user: req.user.id
+            });
+
+            profile.savedRecipes.unshift(savedRecipes);
+
+            await profile.save();
+
+            res.json(profile);
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send('Server Errror');
+        }
+    }
+);
+
+// @route   DELETE api/profile/savedRecipes/:savedRecipes_id
+// @desc    Delete profile saved recipes
+// @access  Private
+router.delete('/savedRecipes/:savedRecipes_id', auth, async (req, res) => {
     try {
         const profile = await Profile.findOne({
             user: req.user.id
         });
 
         // Get remove index
-        const removeIndex = profile.favouriteRecipes.map(item => item.id).indexOf(req.params.favouriteRecipes_id);
+        const removeIndex = profile.savedRecipes
+            .map(item => item.id)
+            .indexOf(req.params.savedRecipes_id);
 
-        profile.favouriteRecipes.splice(removeIndex, 1);
+        profile.savedRecipes.splice(removeIndex, 1);
 
         await profile.save();
 
         res.json(profile);
-
     } catch (error) {
         console.error(err.message);
         res.status(500).send('Server Errror');
     }
 });
+
 module.exports = router;
