@@ -185,7 +185,7 @@ img {
 .badge-danger,
 .alert-danger {
 	background: var(--danger-color);
-	color: #ff0000;
+	color: #fff;
 }
 
 .btn-success,
@@ -193,7 +193,7 @@ img {
 .badge-success,
 .alert-success {
 	background: var(--success-color);
-	color: #fff;
+	color: fff;
 }
 
 .btn-white,
