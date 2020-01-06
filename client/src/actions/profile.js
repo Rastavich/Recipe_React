@@ -60,7 +60,11 @@ export const createProfile = (
 };
 
 // Add Recipe
-export const addRecipe = (formData, history, edit) => async dispatch => {
+export const addRecipe = (
+	formData,
+	history,
+	edit = false
+) => async dispatch => {
 	try {
 		const config = {
 			headers: {
