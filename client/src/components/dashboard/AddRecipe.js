@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { addRecipe } from '../../actions/profile';
 
-const SavedRecipe = ({ savedRecipe }) => {
-	const savedRecipes = savedRecipe.map(recipe => (
+const AddRecipe = ({ addRecipe }) => {
+	const addRecipes = addRecipe.map(recipe => (
 		<tr key={recipe._id}>
 			<td>{recipe.name}</td>
 			<td>{recipe.servingQty}</td>
@@ -16,7 +17,7 @@ const SavedRecipe = ({ savedRecipe }) => {
 
 	return (
 		<Fragment>
-			<h2 className='my-2'>Saved Recipes</h2>
+			<h2 className='my-2'>Saved Recipes</h2>updates
 			<table className='table'>
 				<thead>
 					<tr>
@@ -26,14 +27,14 @@ const SavedRecipe = ({ savedRecipe }) => {
 						<th />
 					</tr>
 				</thead>
-				<tbody>{savedRecipes}</tbody>
+				<tbody>{addRecipes}</tbody>
 			</table>
 		</Fragment>
 	);
 };
 
-SavedRecipe.propTypes = {
-	savedRecipes: PropTypes.array.isRequired
+AddRecipe.propTypes = {
+	addRecipe: PropTypes.array.isRequired
 };
 
-export default SavedRecipe;
+export default addRecipe;
