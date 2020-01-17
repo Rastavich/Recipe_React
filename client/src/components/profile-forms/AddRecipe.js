@@ -86,7 +86,8 @@ const AddRecipe = ({ addRecipe, history }) => {
 						placeholder='* Name'
 						onChange={e => onChange(e)}
 					/>
-					<input
+				</div>
+				{/* <input
 						type='text'
 						name='quantity'
 						value={quantity}
@@ -114,7 +115,7 @@ const AddRecipe = ({ addRecipe, history }) => {
 						placeholder='format'
 						onChange={e => onChange(e)}
 					/>
-				</div>
+				</div> */}
 				<div className='form-group'>
 					<textarea
 						name='method'

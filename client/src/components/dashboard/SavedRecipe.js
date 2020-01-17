@@ -1,14 +1,11 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addRecipe } from '../../actions/profile';
 
-const AddRecipe = ({ addRecipe }) => {
-	const addRecipes = addRecipe.map(recipe => (
+const SavedRecipe = ({ savedRecipe }) => {
+	const savedRecipes = savedRecipe.map(recipe => (
 		<tr key={recipe._id}>
-			<td>{recipe.name}</td>
-			<td>{recipe.servingQty}</td>
-			<td>{recipe.prepTimeInMin}</td>
+			<td>{recipe.recipename}</td>
 			<td>
 				<button className='btn btn-danger'>Delete</button>
 			</td>
@@ -27,14 +24,14 @@ const AddRecipe = ({ addRecipe }) => {
 						<th />
 					</tr>
 				</thead>
-				<tbody>{addRecipes}</tbody>
+				<tbody>{savedRecipes}</tbody>
 			</table>
 		</Fragment>
 	);
 };
 
-AddRecipe.propTypes = {
-	addRecipe: PropTypes.array.isRequired
+SavedRecipe.propTypes = {
+	savedRecipe: PropTypes.array.isRequired
 };
 
-export default addRecipe;
+export default SavedRecipe;

@@ -37,6 +37,7 @@ router.post('/', auth, async (req, res) => {
 		favouritefood,
 		favouritecuisine,
 		favouriteRecipes,
+		savedRecipes,
 		bio
 	} = req.body;
 
@@ -51,6 +52,11 @@ router.post('/', auth, async (req, res) => {
 		profileFields.favouriteRecipes = favouriteRecipes
 			.split(',')
 			.map(favouriteRecipes => favouriteRecipes.trim());
+	}
+	if (savedRecipes) {
+		profileFields.savedRecipes = savedRecipes
+			.split(',')
+			.map(savedRecipes => savedRecipes.trim());
 	}
 	if (bio) profileFields.bio = bio;
 
@@ -160,7 +166,7 @@ router.put(
 	[
 		auth,
 		[
-			check('name', 'Name is required')
+			check('recipename', 'Name is required')
 				.not()
 				.isEmpty(),
 			check('servingQty', 'Serving Qty is Required')
@@ -243,15 +249,15 @@ router.delete(
 	}
 );
 
-// @route   PUT api/profile/savedRecipes
+// @route   PUT api/profile/savedRecipe
 // @desc    Add profile recipes
 // @access  Private
 router.put(
-	'/savedRecipes',
+	'/savedRecipe',
 	[
 		auth,
 		[
-			check('name', 'Name is required')
+			check('recipename', 'Name is required')
 				.not()
 				.isEmpty(),
 			check('servingQty', 'Serving Qty is Required')
@@ -275,15 +281,17 @@ router.put(
 			servingQty,
 			prepTimeInMin,
 			ingredients: [ingredient, quantity, measure, format],
-			method
+			method,
+			isFavourite
 		} = req.body;
 
-		const savedRecipes = {
+		const savedRecipe = {
 			recipename,
 			servingQty,
 			prepTimeInMin,
 			ingredients: [ingredient, quantity, measure, format],
-			method
+			method,
+			isFavourite
 		};
 
 		try {
@@ -291,7 +299,7 @@ router.put(
 				user: req.user.id
 			});
 
-			profile.savedRecipes.unshift(savedRecipes);
+			profile.savedRecipe.unshift(savedRecipe);
 
 			await profile.save();
 
@@ -303,21 +311,21 @@ router.put(
 	}
 );
 
-// @route   DELETE api/profile/savedRecipes/:savedRecipes_id
+// @route   DELETE api/profile/savedRecipe/:savedRecipe_id
 // @desc    Delete profile saved recipes
 // @access  Private
-router.delete('/savedRecipes/:savedRecipes_id', auth, async (req, res) => {
+router.delete('/savedRecipe/:savedRecipe_id', auth, async (req, res) => {
 	try {
 		const profile = await Profile.findOne({
 			user: req.user.id
 		});
 
 		// Get remove index
-		const removeIndex = profile.savedRecipes
+		const removeIndex = profile.savedRecipe
 			.map(item => item.id)
-			.indexOf(req.params.savedRecipes_id);
+			.indexOf(req.params.savedRecipe_id);
 
-		profile.savedRecipes.splice(removeIndex, 1);
+		profile.savedRecipe.splice(removeIndex, 1);
 
 		await profile.save();
 

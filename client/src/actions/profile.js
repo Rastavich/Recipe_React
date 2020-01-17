@@ -72,7 +72,7 @@ export const addRecipe = (
 			}
 		};
 
-		const res = await axios.put('/api/profile/savedRecipes', formData, config);
+		const res = await axios.put('/api/profile/savedRecipe', formData, config);
 
 		dispatch({
 			type: UPDATE_PROFILE,

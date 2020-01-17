@@ -9,7 +9,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import PrivateRoute from './components/routing/PrivateRoute';
 import CreateProfile from './components/profile-forms/CreateProfile';
 import EditProfile from './components/profile-forms/EditProfile';
-import AddRecipe from './components/profile-forms/AddRecipe';
+import SavedRecipe from './components/profile-forms/AddRecipe';
 import './App.css';
 
 // Redux
@@ -49,7 +49,11 @@ const App = () => {
 								path='/edit-profile'
 								component={EditProfile}
 							/>
-							<PrivateRoute exact path='/add-recipe' component={AddRecipe} />
+							<PrivateRoute
+								exact
+								path='/saved-recipe'
+								component={SavedRecipe}
+							/>
 						</Switch>
 					</section>
 				</Fragment>
