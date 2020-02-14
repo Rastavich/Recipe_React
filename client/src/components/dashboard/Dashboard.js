@@ -26,7 +26,7 @@ const Dashboard = ({
 			{profile !== null ? (
 				<Fragment>
 					<DashboardActions />
-					<SavedRecipe SavedRecipe={profile.savedRecipe} />
+					<SavedRecipe SavedRecipe={profile.savedRecipes} />
 				</Fragment>
 			) : (
 				<Fragment>

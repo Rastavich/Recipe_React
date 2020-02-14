@@ -249,11 +249,11 @@ router.delete(
 	}
 );
 
-// @route   PUT api/profile/savedRecipe
+// @route   PUT api/profile/savedRecipes
 // @desc    Add profile recipes
 // @access  Private
 router.put(
-	'/savedRecipe',
+	'/savedRecipes',
 	[
 		auth,
 		[
@@ -285,7 +285,7 @@ router.put(
 			isFavourite
 		} = req.body;
 
-		const savedRecipe = {
+		const savedRecipes = {
 			recipename,
 			servingQty,
 			prepTimeInMin,
@@ -299,7 +299,7 @@ router.put(
 				user: req.user.id
 			});
 
-			profile.savedRecipe.unshift(savedRecipe);
+			profile.savedRecipes.unshift(savedRecipes);
 
 			await profile.save();
 
