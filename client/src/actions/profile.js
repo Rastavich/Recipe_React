@@ -60,7 +60,7 @@ export const createProfile = (
 };
 
 // Add Recipe
-export const addRecipe = (
+export const savedRecipes = (
 	formData,
 	history,
 	edit = false

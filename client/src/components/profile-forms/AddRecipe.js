@@ -2,9 +2,9 @@ import React, { Fragment, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addRecipe } from '../../actions/profile';
+import { savedRecipes } from '../../actions/profile';
 
-const AddRecipe = ({ addRecipe, history }) => {
+const SavedRecipe = ({ savedRecipe, history }) => {
 	const [formData, setFormData] = useState({
 		recipename: '',
 		servingQty: '',
@@ -45,7 +45,7 @@ const AddRecipe = ({ addRecipe, history }) => {
 				className='form'
 				onSubmit={e => {
 					e.preventDefault();
-					addRecipe(formData, history);
+					savedRecipe(formData, history);
 				}}
 			>
 				<div className='form-group'>
@@ -148,8 +148,8 @@ const AddRecipe = ({ addRecipe, history }) => {
 	);
 };
 
-AddRecipe.propTypes = {
-	addRecipe: PropTypes.func.isRequired
+SavedRecipe.propTypes = {
+	savedRecipes: PropTypes.func.isRequired
 };
 
-export default connect(null, { addRecipe })(withRouter(AddRecipe));
+export default connect(null, { savedRecipes })(withRouter(SavedRecipe));
